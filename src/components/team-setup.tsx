@@ -59,11 +59,9 @@ export default function TeamSetup({ teams, openAccordion, setOpenAccordion, onNa
     if (!importingTeam || !csvData.trim()) return;
 
     setIsImporting(true);
-    console.log("Submitting import data...");
 
     try {
       const result = await importPlayers(importingTeam.id, csvData);
-      console.log("Import result:", result);
 
       if (result.success) {
         if (result.count > 0) {

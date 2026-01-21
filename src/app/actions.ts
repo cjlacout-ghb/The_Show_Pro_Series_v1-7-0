@@ -147,7 +147,6 @@ export async function updateGame(gameId: number, data: any) {
 }
 
 export async function importPlayers(teamId: number, csvData: string) {
-    console.log(`Starting import for team ${teamId}, string length: ${csvData.length}`);
     const lines = csvData.trim().split('\n');
     const playersToInsert: any[] = [];
 
