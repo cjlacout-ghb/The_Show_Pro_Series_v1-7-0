@@ -64,7 +64,7 @@ export default function TeamSetup({ teams, openAccordion, setOpenAccordion, onNa
       const result = await importPlayers(importingTeam.id, csvData);
 
       if (result.success) {
-        if (result.count > 0) {
+        if ((result.count ?? 0) > 0) {
           toast({
             title: "Importación Exitosa",
             description: `Se han importado ${result.count} jugadores a ${importingTeam.name}.`,
@@ -72,7 +72,6 @@ export default function TeamSetup({ teams, openAccordion, setOpenAccordion, onNa
           setImportingTeam(null);
         } else {
           toast({
-            variant: "warning",
             title: "Atención",
             description: "El proceso terminó pero no se detectaron jugadores. Verifique el formato.",
           });

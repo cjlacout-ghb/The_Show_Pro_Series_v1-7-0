@@ -37,6 +37,7 @@ export type Player = {
   number: number;
   role: string;
   placeOfBirth: string;
+  teamId: number;
   battingStats?: BattingStat[];
   pitchingStats?: PitchingStat[];
 };
