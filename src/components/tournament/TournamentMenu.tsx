@@ -33,7 +33,7 @@ export default function TournamentMenu({ onNavigate }: TournamentMenuProps) {
                 >
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <span className="text-2xl group-hover:scale-110 transition-transform duration-500">{item.icon}</span>
-                    <span className="relative z-10 group-hover:text-primary-foreground transition-colors duration-500 uppercase tracking-tighter">
+                    <span className="relative z-10 text-muted-foreground group-hover:text-primary-foreground transition-colors duration-500 uppercase tracking-tighter">
                         {item.label}
                     </span>
                 </Button>

@@ -217,18 +217,22 @@ export async function updatePlayer(playerId: number, data: { number?: number, na
     return { success: true };
 }
 
+
+
 export async function resetTournamentScores() {
     try {
-        // 1. Delete all stats (using a filter that definitely hits all rows)
-        const { error: bError } = await supabase.from('batting_stats').delete().neq('game_id', -1);
-        const { error: pError } = await supabase.from('pitching_stats').delete().neq('game_id', -1);
+        console.log('Starting resetTournamentScores...');
 
-        if (bError || pError) {
-            console.error('Error deleting stats:', bError || pError);
-        }
+        // 1. Delete all stats
+        // We don't necessarily need to check if count > 0 here because it might already be empty
+        const { error: bError } = await supabase.from('batting_stats').delete().neq('game_id', -1);
+        if (bError) throw bError;
+
+        const { error: pError } = await supabase.from('pitching_stats').delete().neq('game_id', -1);
+        if (pError) throw pError;
 
         // 2. Reset games scores and innings
-        const { error: error1 } = await supabase
+        const { data: updatedGames, error: error1 } = await supabase
             .from('games')
             .update({
                 score1: null,
@@ -239,10 +243,14 @@ export async function resetTournamentScores() {
                 errors2: null,
                 innings: []
             })
-            .neq('id', -1);
+            .neq('id', -1)
+            .select();
 
-        if (error1) {
-            console.error('Error resetting games:', error1);
+        if (error1) throw error1;
+
+        // If no games were updated, it's likely an RLS permission issue
+        if (!updatedGames || updatedGames.length === 0) {
+            throw new Error("No se pudieron actualizar los juegos. Verifique los permisos RLS en Supabase.");
         }
 
         // 3. Reset team IDs for the championship game (ID 16)
@@ -254,16 +262,17 @@ export async function resetTournamentScores() {
             })
             .eq('id', 16);
 
-        if (error2) {
-            console.error('Error resetting championship game:', error2);
-        }
+        if (error2) throw error2;
 
+        console.log('Reset successful');
         revalidatePath('/');
         return { success: true };
-    } catch (err) {
-        console.error('Unexpected error during reset:', err);
-        return { success: false, error: 'Unexpected error' };
+    } catch (err: any) {
+        console.error('Reset error details:', err);
+        return { success: false, error: err.message || 'Error desconocido' };
     }
 }
+
+
 
 

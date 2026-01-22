@@ -64,13 +64,13 @@ export default function LeaderBoard({ games, teams }: LeaderBoardProps) {
                     value="ataque"
                     className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-black uppercase tracking-widest text-[11px] py-3 transition-all"
                 >
-                    Ataque (Bateo)
+                    BATEADORES
                 </TabsTrigger>
                 <TabsTrigger
                     value="pitcheo"
                     className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-black uppercase tracking-widest text-[11px] py-3 transition-all"
                 >
-                    Defensa (Pitcheo)
+                    LANZADORES
                 </TabsTrigger>
             </TabsList>
 
